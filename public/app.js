@@ -12,6 +12,7 @@ const el = {
   runPanel: $('#run-panel'),
   runBar: $('#run-bar'),
   runLog: $('#run-log'),
+  runQueue: $('#run-queue'),
   runCount: $('#run-count'),
   runTitle: $('#run-title'),
   btnRun: $('#btn-run'),
@@ -443,6 +444,36 @@ function sparkline(history) {
   return `<svg class="spark" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" aria-label="${points.length} checks"><path${flat} d="${d}"/></svg>`;
 }
 
+/**
+ * Summary tiles for one engine. Deliberately per-engine and never combined:
+ * a DuckDuckGo position of 2 and a Search Console 28-day average of 7.4 are
+ * different measurements, so averaging across them would be meaningless.
+ */
+function statRowHtml(engine) {
+  const summaries = state.keywords.map((kw) => kw.engines[engine]);
+  const found = summaries.filter((s) => s.latest?.status === 'found');
+  const positions = found.map((s) => s.latest.position);
+  const avg = positions.length ? positions.reduce((a, b) => a + b, 0) / positions.length : null;
+  const improved = summaries.filter((s) => s.delta > 0).length;
+  const declined = summaries.filter((s) => s.delta < 0).length;
+  const top10 = positions.filter((p) => p <= 10).length;
+
+  const tile = (label, value, sub, cls = '') =>
+    `<div class="stat"><div class="stat-label">${esc(label)}</div>
+     <div class="stat-value ${cls}">${value}</div>
+     <div class="stat-sub">${esc(sub)}</div></div>`;
+
+  const dash = '<span class="muted">—</span>';
+  return `<div class="stat-row">
+    ${tile('Tracked', state.keywords.length, `keyword${state.keywords.length === 1 ? '' : 's'}`)}
+    ${tile('Ranking', found.length, `of ${state.keywords.length} with a position`)}
+    ${tile(engine === 'gsc' ? 'Avg position' : 'Avg position', avg === null ? dash : avg.toFixed(1), positions.length ? `across ${positions.length} ranking keyword${positions.length === 1 ? '' : 's'}` : 'no data yet')}
+    ${tile('Top 10', top10, positions.length ? `${Math.round((top10 / positions.length) * 100)}% of ranking keywords` : 'no data yet')}
+    ${tile('Improved', improved ? '↑ ' + improved : '0', 'since the previous check', improved ? 'up' : '')}
+    ${tile('Declined', declined ? '↓ ' + declined : '0', 'since the previous check', declined ? 'down' : '')}
+  </div>`;
+}
+
 function bannerHtml(engine) {
   const info = state.availability?.[engine];
   if (!info || info.available) return '';
@@ -523,6 +554,7 @@ function sectionHtml(engine) {
       <button class="engine-run" data-run-engine="${engine}"${state.runActive ? ' disabled' : ''}>Check ${esc(ui.label)}</button>
     </div>
     ${bannerHtml(engine)}
+    ${state.keywords.length ? statRowHtml(engine) : ''}
     <div class="panel table-panel">
       <table><thead>${head}</thead><tbody>${body}</tbody></table>
       ${state.keywords.length ? '' : '<p class="muted pad">No keywords yet. Add some above.</p>'}
@@ -818,9 +850,17 @@ async function showDetail(id, engine) {
 
 async function startRun(keywordIds = null, engines = null) {
   try {
-    await api(`/api/projects/${state.projectId}/run`, { method: 'POST', body: { keywordIds, engines } });
+    const out = await api(`/api/projects/${state.projectId}/run`, { method: 'POST', body: { keywordIds, engines } });
     el.runPanel.classList.remove('hidden');
-    el.runLog.textContent = '';
+    if (out.queued) {
+      toast(
+        out.duplicate
+          ? `Already queued (position ${out.position})`
+          : `Queued — will start when the current check finishes (position ${out.position})`,
+      );
+    } else {
+      el.runLog.textContent = '';
+    }
     setRunning(true);
   } catch (err) {
     toast(err.message, true);
@@ -831,6 +871,23 @@ el.btnRun.addEventListener('click', () => startRun(null));
 el.btnCancel.addEventListener('click', async () => {
   await api('/api/run/cancel', { method: 'POST' });
   el.btnCancel.disabled = true;
+});
+
+el.runQueue.addEventListener('click', async (e) => {
+  const button = e.target.closest('button');
+  if (!button) return;
+  try {
+    if (button.id === 'clear-queue') {
+      const { cleared } = await api('/api/run/queue', { method: 'DELETE' });
+      toast(`Cleared ${cleared} queued check${cleared === 1 ? '' : 's'}`);
+    } else if (button.dataset.queueId) {
+      await api(`/api/run/queue?id=${button.dataset.queueId}`, { method: 'DELETE' });
+    }
+    const snapshot = await api('/api/run/status');
+    applyRunSnapshot(snapshot);
+  } catch (err) {
+    toast(err.message, true);
+  }
 });
 
 function setRunning(running) {
@@ -846,23 +903,45 @@ function setRunning(running) {
   });
 }
 
+function renderQueue(queued) {
+  if (!queued?.length) return el.runQueue.classList.add('hidden');
+  el.runQueue.classList.remove('hidden');
+  el.runQueue.innerHTML =
+    `<div class="queue-head"><strong>Queued (${queued.length})</strong>
+       <button class="link-btn" id="clear-queue">clear all</button></div>` +
+    queued
+      .map(
+        (q, i) => `<div class="queue-item"><span class="queue-n">${i + 1}</span>
+          <span>${esc(q.label)}</span>
+          <button class="link-btn queue-x" data-queue-id="${q.id}" title="Remove from queue">✕</button></div>`,
+      )
+      .join('');
+}
+
 function applyRunSnapshot(snapshot) {
-  if (!snapshot) {
+  const state_ = snapshot ?? {};
+  const run = state_.active ?? null;
+  renderQueue(state_.queued);
+
+  if (!run) {
     if (state.runActive) {
       setRunning(false);
       el.runTitle.textContent = 'Run finished';
+      el.runCount.textContent = '';
       loadKeywords().catch(() => {});
     }
     return;
   }
   setRunning(true);
   el.runPanel.classList.remove('hidden');
-  el.runTitle.textContent = snapshot.cancelled ? 'Stopping…' : `Checking: ${snapshot.current ?? '…'}`;
-  el.runCount.textContent = `${snapshot.done} / ${snapshot.total}`;
-  el.runBar.style.width = `${snapshot.total ? (snapshot.done / snapshot.total) * 100 : 0}%`;
+  const waiting = state_.queued?.length ? ` · ${state_.queued.length} queued` : '';
+  el.runTitle.textContent = run.cancelled ? 'Stopping…' : `Checking: ${run.current ?? '…'}`;
+  el.runCount.textContent = `${run.done} / ${run.total}${waiting}`;
+  el.runBar.style.width = `${run.total ? (run.done / run.total) * 100 : 0}%`;
+  const snapshotRun = run;
 
   const atBottom = el.runLog.scrollTop + el.runLog.clientHeight >= el.runLog.scrollHeight - 30;
-  el.runLog.textContent = snapshot.log
+  el.runLog.textContent = snapshotRun.log
     .map((line) => `${new Date(line.at).toLocaleTimeString()}  ${line.message}`)
     .join('\n');
   if (atBottom) el.runLog.scrollTop = el.runLog.scrollHeight;

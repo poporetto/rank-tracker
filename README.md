@@ -164,8 +164,11 @@ The schedule only fires while `npm start` is running. To start it automatically 
 login, a ready-made launch agent is included:
 
 ```bash
-cp com.ranktracker.server.plist ~/Library/LaunchAgents/ && launchctl load ~/Library/LaunchAgents/com.ranktracker.server.plist
+npm run install-agent
 ```
+
+That generates the plist with the right absolute paths for your machine and loads it.
+The generated file is gitignored, because it contains your home directory path.
 
 To stop it running at login:
 
@@ -182,16 +185,59 @@ curl -s -XPOST localhost:4173/api/projects/1/run -H 'content-type: application/j
 
 ---
 
+## The run queue
+
+Only one check runs at a time — DuckDuckGo drives a single shared Chrome profile, and
+two concurrent runs would fight over it. So a second request while one is going gets
+**queued**, not rejected: it appears under the progress bar and starts automatically
+the moment the current run finishes.
+
+Identical requests are de-duplicated, so an impatient double-click won't stack up two
+copies. You can remove a single queued item with ✕ or drop them all with *clear all*.
+
+---
+
+## Publishing a read-only snapshot
+
+Checking has to happen locally, but the *results* can be published anywhere:
+
+```bash
+npm run export          # -> docs/index.html
+```
+
+That writes one self-contained HTML file — no server, no database, no external
+requests. Point GitHub Pages at the `docs/` folder and it just works.
+
+```bash
+npm run export -- --no-metrics       # omit impressions / clicks / CTR
+npm run export -- --project 1        # a single project
+npm run export -- --out ~/rank.html  # somewhere else
+```
+
+**What is never exported:** OAuth client id, client secret, refresh token, or anything
+else from the settings table. Only keywords and their check history.
+
+**What is exported, and worth thinking about before publishing:** your keywords, your
+positions, and — unless you pass `--no-metrics` — your Search Console impressions,
+clicks and CTR. That is commercially sensitive competitive information. If the repo is
+public, so is that data.
+
+---
+
 ## Layout
 
 ```
 server.mjs                  HTTP server, JSON API, OAuth callback, CSV export
 src/db.mjs                  SQLite schema and queries (node:sqlite, no ORM)
 src/domain.mjs              Domain normalisation and matching
-src/tracker.mjs             Run orchestration, engine registry, delta logic
+src/tracker.mjs             Run orchestration, engine registry, delta logic, run queue
 src/providers/duckduckgo.mjs  Playwright SERP reader
 src/providers/gsc.mjs         Search Console API client
+src/scheduler.mjs           Daily automatic checks
+scripts/export.mjs          Static read-only snapshot generator
+scripts/launch-agent.mjs    Generates the macOS launch agent
 public/                     Dashboard (vanilla JS, no build step)
+docs/index.html             Generated snapshot (npm run export)
 data/rank-tracker.db        Your data
 ```
 

@@ -150,7 +150,7 @@ async function handleApi(req, res, url) {
         connectedAt: gsc.getCredentials().connectedAt,
         redirectUri: redirectUri(),
       },
-      activeRun: tracker.getActiveRun(),
+      activeRun: tracker.getRunState(),
     });
   }
 
@@ -306,7 +306,7 @@ async function handleApi(req, res, url) {
   }
 
   if (p === '/api/run/status' && req.method === 'GET') {
-    return json(res, 200, { active: tracker.getActiveRun() });
+    return json(res, 200, tracker.getRunState());
   }
 
   if ((mm = m('/api/projects/:id/runs')) && req.method === 'GET') {
@@ -320,7 +320,7 @@ async function handleApi(req, res, url) {
       connection: 'keep-alive',
     });
     const send = (snapshot) => res.write(`data: ${JSON.stringify(snapshot)}\n\n`);
-    send(tracker.getActiveRun());
+    send(tracker.getRunState());
     const unsubscribe = tracker.subscribe(send);
     const heartbeat = setInterval(() => res.write(': ping\n\n'), 20000);
     req.on('close', () => {

@@ -53,10 +53,10 @@ export function setSchedule({ enabled, time, catchUp }) {
 /** Wait for the current run to finish, with a ceiling so we never wedge. */
 async function waitForIdle(maxMs = 6 * 60 * 60 * 1000) {
   const started = Date.now();
-  while (tracker.getActiveRun() && Date.now() - started < maxMs) {
+  while (tracker.isRunning() && Date.now() - started < maxMs) {
     await new Promise((r) => setTimeout(r, 5000));
   }
-  return !tracker.getActiveRun();
+  return !tracker.isRunning();
 }
 
 /**
@@ -98,7 +98,7 @@ async function tick() {
 
   const today = localDate();
   if (lastDate === today) return; // already ran today
-  if (tracker.getActiveRun()) return; // never interrupt a manual run
+  if (tracker.isRunning()) return; // never interrupt a manual run
 
   // Fire at the scheduled minute, or later the same day if the machine was
   // asleep or the server was off when that minute passed.

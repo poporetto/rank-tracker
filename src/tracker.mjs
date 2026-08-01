@@ -73,10 +73,20 @@ export function getQueue() {
   }));
 }
 
+/** The currently executing run, or null. Stays null when only the queue has items. */
 export function getActiveRun() {
-  if (!active) return queue.length ? { idle: true, queued: getQueue() } : null;
+  if (!active) return null;
   const { runId, projectId, total, done, current, cancelled } = active;
-  return { runId, projectId, total, done, current, cancelled, log: active.log.slice(-80), queued: getQueue() };
+  return { runId, projectId, total, done, current, cancelled, log: active.log.slice(-80) };
+}
+
+/** Everything the dashboard needs to draw progress: what's running plus what's waiting. */
+export function getRunState() {
+  return { active: getActiveRun(), queued: getQueue() };
+}
+
+export function isRunning() {
+  return active !== null;
 }
 
 export function clearQueue() {
@@ -100,7 +110,7 @@ export function subscribe(fn) {
 }
 
 function emit() {
-  const snapshot = getActiveRun();
+  const snapshot = getRunState();
   for (const fn of listeners) {
     try {
       fn(snapshot);

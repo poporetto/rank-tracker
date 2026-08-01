@@ -4,13 +4,34 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Rank Tracker</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>">
+<link rel="icon" type="image/svg+xml" href="/logo.svg">
 <link rel="stylesheet" href="/style.css">
 </head>
 <body>
 
 <header class="topbar">
-  <div class="brand"><span class="mark">▲</span> Rank Tracker</div>
+  <div class="brand">
+    <!-- Ascending bars with a rising trend line: the whole product in one mark. -->
+    <svg class="logo" viewBox="0 0 32 32" role="img" aria-label="Rank Tracker">
+      <defs>
+        <linearGradient id="rt-g" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#4a90e8"/>
+          <stop offset="1" stop-color="#2a78d6"/>
+        </linearGradient>
+      </defs>
+      <rect width="32" height="32" rx="9" fill="url(#rt-g)"/>
+      <g fill="#fff">
+        <rect x="7"  y="19" width="4" height="7" rx="2" opacity=".5"/>
+        <rect x="14" y="15" width="4" height="11" rx="2" opacity=".72"/>
+        <rect x="21" y="10" width="4" height="16" rx="2"/>
+      </g>
+      <path d="M8 14.5 L15.5 9.5 L20 12 L25.5 6.5" fill="none" stroke="#fff"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity=".95"/>
+      <circle cx="25.5" cy="6.5" r="2.4" fill="#fff"/>
+    </svg>
+    <span>Rank Tracker</span>
+    <span class="brand-sub">local</span>
+  </div>
   <div class="topbar-right">
     <select id="project-select" aria-label="Project"></select>
     <button id="btn-new-project" class="ghost">+ Project</button>
@@ -57,6 +78,7 @@
         <span id="run-count" class="muted"></span>
       </div>
       <div class="progress"><div id="run-bar"></div></div>
+      <div id="run-queue" class="run-queue hidden"></div>
       <pre id="run-log" class="run-log"></pre>
     </div>
 
