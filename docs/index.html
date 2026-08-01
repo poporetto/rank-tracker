@@ -1,0 +1,416 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>Utopia Signs — rankings</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>">
+<style>
+:root {
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --border: #e2e5ea;
+  --text: #16191d;
+  --muted: #6b7280;
+  --accent: #2563eb;
+  --accent-ink: #ffffff;
+  --up: #157347;
+  --down: #b3261e;
+  --warn: #a16207;
+  --chip: #eef1f5;
+  --radius: 10px;
+  --shadow: 0 1px 2px rgb(16 24 40 / .06), 0 1px 3px rgb(16 24 40 / .08);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #101215;
+    --surface: #181b20;
+    --border: #2a2f37;
+    --text: #e8eaed;
+    --muted: #9aa1ab;
+    --accent: #5b8cff;
+    --accent-ink: #0b0d10;
+    --up: #48c78e;
+    --down: #ff6b6b;
+    --warn: #e0b341;
+    --chip: #22262d;
+    --shadow: none;
+  }
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+h1 { font-size: 1.4rem; margin: 0 0 .2rem; }
+h2 { font-size: 1.05rem; margin: 0 0 .6rem; }
+a { color: var(--accent); }
+.muted { color: var(--muted); }
+.hidden { display: none !important; }
+.pad { padding: 1rem; }
+
+/* --------------------------------------------------------------- top bar */
+
+.topbar {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  padding: .7rem 1.2rem;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  position: sticky; top: 0; z-index: 20;
+}
+.brand { font-weight: 650; letter-spacing: -.01em; display: flex; align-items: center; gap: .45rem; }
+.mark { color: var(--accent); }
+.topbar-right { display: flex; gap: .5rem; align-items: center; flex-wrap: wrap; }
+
+main { max-width: 1180px; margin: 0 auto; padding: 1.3rem 1.2rem 4rem; }
+
+/* --------------------------------------------------------------- controls */
+
+button, .button {
+  font: inherit; cursor: pointer; border-radius: 8px; padding: .45rem .85rem;
+  border: 1px solid var(--border); background: var(--surface); color: var(--text);
+  text-decoration: none; display: inline-block;
+}
+button:hover, .button:hover { border-color: var(--muted); }
+button:disabled { opacity: .5; cursor: not-allowed; }
+.primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); font-weight: 550; }
+.danger { color: var(--down); border-color: var(--down); }
+.ghost { background: transparent; }
+.link-btn { background: none; border: none; color: var(--accent); padding: .2rem .35rem; }
+
+input, select, textarea {
+  font: inherit; color: var(--text); background: var(--surface);
+  border: 1px solid var(--border); border-radius: 8px; padding: .45rem .6rem; width: 100%;
+}
+textarea { resize: vertical; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .88rem; }
+label { display: block; font-size: .84rem; color: var(--muted); font-weight: 500; }
+label input, label select, label textarea { margin-top: .25rem; color: var(--text); font-weight: 400; }
+.stack { display: grid; gap: .9rem; max-width: 24rem; }
+
+/* ---------------------------------------------------------------- panels */
+
+.panel {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); box-shadow: var(--shadow);
+  padding: 1rem; margin-bottom: 1rem;
+}
+.table-panel { padding: 0; overflow: hidden; }
+
+.project-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.project-head .actions { display: flex; gap: .5rem; flex-wrap: wrap; }
+
+/* ------------------------------------------------------------ add keywords */
+
+.add-block summary { cursor: pointer; font-weight: 550; color: var(--accent); }
+.kw-form { display: grid; grid-template-columns: repeat(3, 1fr) auto; gap: .75rem; align-items: end; margin-top: .9rem; }
+.kw-form .wide { grid-column: 1 / -1; }
+.kw-form button { height: 2.3rem; }
+.note { margin: .6rem 0 0; font-size: .82rem; }
+
+@media (max-width: 760px) {
+  .kw-form { grid-template-columns: 1fr; }
+}
+
+/* -------------------------------------------------------------- sections */
+
+.engine-section { margin-bottom: 2.2rem; }
+.engine-head {
+  display: flex; align-items: baseline; gap: .7rem; flex-wrap: wrap;
+  margin-bottom: .7rem; padding-bottom: .5rem; border-bottom: 2px solid var(--border);
+}
+.engine-head h2 { margin: 0; font-size: 1.12rem; }
+.engine-head .engine-kind {
+  font-size: .74rem; font-weight: 600; text-transform: uppercase; letter-spacing: .05em;
+  color: var(--accent); background: color-mix(in srgb, var(--accent) 14%, transparent);
+  padding: .12rem .5rem; border-radius: 999px;
+}
+.engine-head .engine-sub { font-size: .84rem; color: var(--muted); margin-left: auto; }
+.engine-run { font-size: .84rem; padding: .35rem .8rem; white-space: nowrap; }
+
+/* The sparkline is the obvious thing to click for a bigger chart — make it look it. */
+.spark-btn { background: none; border: none; padding: .1rem .2rem; border-radius: 6px; cursor: pointer; line-height: 0; }
+.spark-btn:hover { background: var(--chip); }
+.spark-btn:disabled { cursor: default; background: none; }
+
+.banner {
+  background: var(--chip); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: .8rem 1rem; margin-bottom: 1rem; font-size: .87rem; color: var(--text);
+  display: flex; gap: .6rem; align-items: baseline; flex-wrap: wrap;
+}
+.banner strong { color: var(--warn); }
+
+/* ---------------------------------------------------------------- table */
+
+table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+thead th {
+  text-align: left; font-size: .74rem; text-transform: uppercase; letter-spacing: .05em;
+  color: var(--muted); font-weight: 600; padding: .7rem .8rem; border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+tbody td { padding: .65rem .8rem; border-bottom: 1px solid var(--border); vertical-align: middle; }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr.inactive { opacity: .5; }
+.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.nowrap { white-space: nowrap; }
+.col-kw { min-width: 14rem; }
+.kw-cell { font-weight: 550; }
+.kw-url { display: block; font-size: .76rem; color: var(--muted); max-width: 22rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.table-panel { overflow-x: auto; }
+
+.pos { font-size: 1.05rem; font-weight: 650; font-variant-numeric: tabular-nums; }
+.delta { font-variant-numeric: tabular-nums; font-weight: 550; }
+.delta.up { color: var(--up); }
+.delta.down { color: var(--down); }
+.delta.flat { color: var(--muted); }
+
+.chip {
+  display: inline-block; padding: .12rem .5rem; border-radius: 999px;
+  background: var(--chip); color: var(--muted); font-size: .74rem; font-weight: 600; white-space: nowrap;
+}
+.chip.absent { color: var(--muted); }
+.chip.blocked { color: var(--warn); }
+.chip.error { color: var(--down); }
+.chip.new { color: var(--accent); }
+
+.row-actions { display: flex; gap: .1rem; justify-content: flex-end; white-space: nowrap; }
+.danger-btn:hover { color: var(--down); }
+
+/* --------------------------------------------------------- drag to reorder */
+
+.drag-cell { width: 1.6rem; padding-right: 0 !important; }
+.drag-handle {
+  cursor: grab; color: var(--muted); opacity: .45; user-select: none;
+  font-size: 1rem; line-height: 1; display: inline-block; padding: .15rem;
+}
+.drag-handle:hover { opacity: 1; color: var(--accent); }
+.drag-handle:active { cursor: grabbing; }
+.drag-handle.off { cursor: not-allowed; opacity: .18; }
+.drag-handle.off:hover { color: var(--muted); opacity: .18; }
+
+/* ------------------------------------------------------------- sortable th */
+
+th.sortable { cursor: pointer; user-select: none; }
+th.sortable:hover { color: var(--text); }
+th.sorted { color: var(--accent); }
+th .arrow { font-size: .7em; }
+.sort-note { font-size: .8rem; color: var(--muted); margin: .5rem 0 0; }
+tbody tr.dragging { opacity: .4; }
+tbody tr.drop-above td { box-shadow: inset 0 2px 0 var(--accent); }
+tbody tr.drop-below td { box-shadow: inset 0 -2px 0 var(--accent); }
+
+/* ---------------------------------------------------------------- run panel */
+
+.run-panel { border-color: var(--accent); }
+.run-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: .6rem; }
+.progress { height: 6px; background: var(--chip); border-radius: 99px; overflow: hidden; }
+#run-bar { height: 100%; width: 0; background: var(--accent); transition: width .3s ease; }
+.run-log {
+  margin: .8rem 0 0; max-height: 15rem; overflow: auto; font-size: .8rem; line-height: 1.55;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace; white-space: pre-wrap;
+  color: var(--muted); background: var(--bg); padding: .7rem; border-radius: 8px;
+}
+
+.disclaimer {
+  font-size: .82rem; color: var(--muted); line-height: 1.6;
+  border-left: 3px solid var(--border); padding-left: .9rem; margin-top: 1.6rem;
+}
+
+/* ---------------------------------------------------------------- modal */
+
+.backdrop {
+  position: fixed; inset: 0; background: rgb(0 0 0 / .45);
+  display: flex; align-items: flex-start; justify-content: center; padding: 3rem 1rem; z-index: 50; overflow: auto;
+}
+.modal {
+  background: var(--surface); border-radius: 12px; border: 1px solid var(--border);
+  max-width: 46rem; width: 100%; padding: 1.4rem;
+}
+.modal-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: 1rem; }
+.modal .close { border: none; background: none; font-size: 1.3rem; line-height: 1; color: var(--muted); }
+.modal-actions { display: flex; gap: .5rem; justify-content: flex-end; margin-top: 1.2rem; }
+
+.chart { width: 100%; height: auto; display: block; }
+.chart g:hover .dot { r: 5; }
+.chart g { cursor: crosshair; }
+.chart .grid { stroke: var(--border); stroke-width: 1; }
+.chart .line { fill: none; stroke: var(--accent); stroke-width: 2; }
+.chart .dot { fill: var(--accent); }
+.chart .lbl { fill: var(--muted); font-size: 10px; }
+.chart .gap { stroke: var(--border); stroke-dasharray: 3 3; stroke-width: 1.5; fill: none; }
+
+.spark { display: block; }
+.spark path { fill: none; stroke: var(--accent); stroke-width: 1.6; }
+.spark .flat { stroke: var(--muted); }
+
+.serp-list { list-style: none; padding: 0; margin: .5rem 0 0; font-size: .84rem; max-height: 18rem; overflow: auto; }
+.serp-list li { display: flex; gap: .6rem; padding: .35rem 0; border-bottom: 1px solid var(--border); }
+.serp-list li.mine { background: color-mix(in srgb, var(--accent) 12%, transparent); font-weight: 600; }
+.serp-list .n { color: var(--muted); min-width: 1.7rem; text-align: right; font-variant-numeric: tabular-nums; }
+.serp-list .u { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.hist-table { font-size: .84rem; margin-top: .6rem; }
+.form-grid { display: grid; gap: .9rem; }
+.hint { font-size: .8rem; color: var(--muted); line-height: 1.55; }
+.hint code { background: var(--chip); padding: .1rem .35rem; border-radius: 4px; font-size: .95em; user-select: all; }
+.toast {
+  position: fixed; bottom: 1.2rem; left: 50%; transform: translateX(-50%);
+  background: var(--text); color: var(--bg); padding: .55rem 1rem; border-radius: 8px;
+  font-size: .87rem; z-index: 100; max-width: 90vw;
+}
+.toast.err { background: var(--down); color: #fff; }
+ol.steps { padding-left: 1.2rem; font-size: .84rem; color: var(--muted); line-height: 1.7; }
+
+body { padding: 0 0 4rem; }
+.static-head { max-width: 1180px; margin: 0 auto; padding: 1.6rem 1.2rem .4rem; }
+.stamp { font-size: .82rem; color: var(--muted); }
+main { padding-top: .6rem; }
+</style>
+</head>
+<body>
+<div class="static-head">
+  <div class="brand"><span class="mark">▲</span> Rank Tracker <span class="chip">read-only snapshot</span></div>
+</div>
+<main id="app"></main>
+<script id="payload" type="application/json">{"generatedAt":"2026-08-01T01:27:57.852Z","includeMetrics":true,"engines":[{"id":"gsc","label":"Google Search Console"},{"id":"duckduckgo","label":"DuckDuckGo"}],"projects":[{"name":"Utopia Signs","domain":"utopiasigns.com.au","keywords":[{"keyword":"Line marking south coast","region":"Australia — English","regionShort":"AU·EN","depth":50,"engines":{"gsc":{"latest":{"at":"2026-08-01T01:19:31.575Z","status":"found","position":6.3,"parsed":1,"impressions":28,"clicks":0,"ctr":0},"delta":-0.2,"history":[{"at":"2026-07-31T09:38:32.819Z","status":"absent","position":null,"parsed":0},{"at":"2026-07-31T10:03:17.109Z","status":"found","position":6.1,"parsed":1,"impressions":29,"clicks":0,"ctr":0},{"at":"2026-07-31T10:04:37.576Z","status":"found","position":6.1,"parsed":1,"impressions":29,"clicks":0,"ctr":0},{"at":"2026-07-31T10:10:21.946Z","status":"found","position":6.1,"parsed":1,"impressions":29,"clicks":0,"ctr":0},{"at":"2026-07-31T10:16:09.109Z","status":"found","position":6.1,"parsed":1,"impressions":29,"clicks":0,"ctr":0},{"at":"2026-07-31T10:26:04.503Z","status":"found","position":6.1,"parsed":1,"impressions":29,"clicks":0,"ctr":0},{"at":"2026-07-31T10:34:46.646Z","status":"found","position":6.1,"parsed":1,"impressions":29,"clicks":0,"ctr":0},{"at":"2026-07-31T11:01:35.149Z","status":"found","position":6.1,"parsed":1,"impressions":29,"clicks":0,"ctr":0},{"at":"2026-07-31T11:04:29.598Z","status":"found","position":6.1,"parsed":1,"impressions":29,"clicks":0,"ctr":0},{"at":"2026-07-31T21:00:50.690Z","status":"found","position":6.1,"parsed":1,"impressions":29,"clicks":0,"ctr":0},{"at":"2026-08-01T01:19:31.575Z","status":"found","position":6.3,"parsed":1,"impressions":28,"clicks":0,"ctr":0}]},"duckduckgo":{"latest":{"at":"2026-08-01T01:20:10.062Z","status":"found","position":3,"parsed":50,"impressions":null,"clicks":null,"ctr":null},"delta":-1,"history":[{"at":"2026-07-31T04:54:36.065Z","status":"found","position":3,"parsed":50,"impressions":null,"clicks":null,"ctr":null},{"at":"2026-07-31T05:27:21.374Z","status":"found","position":3,"parsed":50,"impressions":null,"clicks":null,"ctr":null},{"at":"2026-07-31T05:28:04.455Z","status":"found","position":3,"parsed":50,"impressions":null,"clicks":null,"ctr":null},{"at":"2026-07-31T09:36:35.277Z","status":"found","position":3,"parsed":50,"impressions":null,"clicks":null,"ctr":null},{"at":"2026-07-31T09:36:56.286Z","status":"found","position":3,"parsed":50,"impressions":null,"clicks":null,"ctr":null},{"at":"2026-07-31T09:38:45.155Z","status":"found","position":3,"parsed":50,"impressions":null,"clicks":null,"ctr":null},{"at":"2026-07-31T10:03:29.240Z","status":"found","position":3,"parsed":50,"impressions":null,"clicks":null,"ctr":null},{"at":"2026-07-31T10:04:50.071Z","status":"found","position":3,"parsed":50,"impressions":null,"clicks":null,"ctr":null},{"at":"2026-07-31T10:26:32.394Z","status":"found","position":3,"parsed":50,"impressions":null,"clicks":null,"ctr":null},{"at":"2026-07-31T11:05:07.533Z","status":"found","position":2,"parsed":50,"impressions":null,"clicks":null,"ctr":null},{"at":"2026-07-31T21:48:38.820Z","status":"found","position":2,"parsed":50,"impressions":null,"clicks":null,"ctr":null},{"at":"2026-08-01T01:20:10.062Z","status":"found","position":3,"parsed":50,"impressions":null,"clicks":null,"ctr":null}]}}},{"keyword":"signage south coast","region":"Australia — English","regionShort":"AU·EN","depth":30,"engines":{"gsc":{"latest":{"at":"2026-08-01T01:19:31.754Z","status":"absent","position":null,"parsed":0},"delta":null,"history":[{"at":"2026-07-31T10:04:37.958Z","status":"absent","position":null,"parsed":0},{"at":"2026-07-31T10:10:22.123Z","status":"absent","position":null,"parsed":0},{"at":"2026-07-31T10:16:11.242Z","status":"absent","position":null,"parsed":0},{"at":"2026-07-31T10:26:07.948Z","status":"absent","position":null,"parsed":0},{"at":"2026-07-31T10:34:47.413Z","status":"absent","position":null,"parsed":0},{"at":"2026-07-31T11:01:35.576Z","status":"absent","position":null,"parsed":0},{"at":"2026-07-31T11:04:30.014Z","status":"absent","position":null,"parsed":0},{"at":"2026-07-31T21:00:51.098Z","status":"absent","position":null,"parsed":0},{"at":"2026-08-01T01:19:31.754Z","status":"absent","position":null,"parsed":0}]},"duckduckgo":{"latest":{"at":"2026-08-01T01:20:20.144Z","status":"found","position":9,"parsed":30,"impressions":null,"clicks":null,"ctr":null},"delta":0,"history":[{"at":"2026-07-31T10:05:00.159Z","status":"found","position":8,"parsed":30,"impressions":null,"clicks":null,"ctr":null},{"at":"2026-07-31T11:05:17.697Z","status":"found","position":9,"parsed":30,"impressions":null,"clicks":null,"ctr":null},{"at":"2026-07-31T21:48:48.795Z","status":"found","position":9,"parsed":30,"impressions":null,"clicks":null,"ctr":null},{"at":"2026-08-01T01:20:20.144Z","status":"found","position":9,"parsed":30,"impressions":null,"clicks":null,"ctr":null}]}}},{"keyword":"signage kiama","region":"Australia — English","regionShort":"AU·EN","depth":30,"engines":{"gsc":{"latest":{"at":"2026-08-01T01:19:33.724Z","status":"found","position":5.8,"parsed":1,"impressions":36,"clicks":0,"ctr":0},"delta":-0.1,"history":[{"at":"2026-07-31T10:16:10.917Z","status":"found","position":5.7,"parsed":1,"impressions":37,"clicks":0,"ctr":0},{"at":"2026-07-31T10:26:06.670Z","status":"found","position":5.7,"parsed":1,"impressions":37,"clicks":0,"ctr":0},{"at":"2026-07-31T10:34:49.587Z","status":"found","position":5.7,"parsed":1,"impressions":37,"clicks":0,"ctr":0},{"at":"2026-07-31T11:01:38.402Z","status":"found","position":5.7,"parsed":1,"impressions":37,"clicks":0,"ctr":0},{"at":"2026-07-31T11:04:31.453Z","status":"found","position":5.7,"parsed":1,"impressions":37,"clicks":0,"ctr":0},{"at":"2026-07-31T21:00:53.265Z","status":"found","position":5.7,"parsed":1,"impressions":37,"clicks":0,"ctr":0},{"at":"2026-08-01T01:19:33.724Z","status":"found","position":5.8,"parsed":1,"impressions":36,"clicks":0,"ctr":0}]},"duckduckgo":{"latest":{"at":"2026-08-01T01:20:40.512Z","status":"found","position":2,"parsed":30,"impressions":null,"clicks":null,"ctr":null},"delta":0,"history":[{"at":"2026-07-31T11:05:38.575Z","status":"found","position":2,"parsed":30,"impressions":null,"clicks":null,"ctr":null},{"at":"2026-07-31T21:49:09.183Z","status":"found","position":2,"parsed":30,"impressions":null,"clicks":null,"ctr":null},{"at":"2026-08-01T01:20:40.512Z","status":"found","position":2,"parsed":30,"impressions":null,"clicks":null,"ctr":null}]}}},{"keyword":"linemarking wollongong","region":"Australia — English","regionShort":"AU·EN","depth":30,"engines":{"gsc":{"latest":{"at":"2026-08-01T01:19:38.594Z","status":"found","position":7.5,"parsed":1,"impressions":26,"clicks":0,"ctr":0},"delta":0,"history":[{"at":"2026-07-31T10:16:10.380Z","status":"found","position":7.5,"parsed":1,"impressions":27,"clicks":0,"ctr":0},{"at":"2026-07-31T10:26:05.788Z","status":"found","position":7.5,"parsed":1,"impressions":27,"clicks":0,"ctr":0},{"at":"2026-07-31T11:01:42.312Z","status":"found","position":7.5,"parsed":1,"impressions":27,"clicks":0,"ctr":0},{"at":"2026-07-31T11:04:36.059Z","status":"found","position":7.5,"parsed":1,"impressions":27,"clicks":0,"ctr":0},{"at":"2026-07-31T21:48:04.920Z","status":"found","position":7.5,"parsed":1,"impressions":27,"clicks":0,"ctr":0},{"at":"2026-08-01T01:19:38.594Z","status":"found","position":7.5,"parsed":1,"impressions":26,"clicks":0,"ctr":0}]},"duckduckgo":{"latest":{"at":"2026-08-01T01:21:41.831Z","status":"absent","position":null,"parsed":30},"delta":null,"history":[{"at":"2026-07-31T11:06:40.169Z","status":"absent","position":null,"parsed":30},{"at":"2026-08-01T01:21:41.831Z","status":"absent","position":null,"parsed":30}]}}},{"keyword":"car park line marking south coast","region":"Australia — English","regionShort":"AU·EN","depth":30,"engines":{"gsc":{"latest":{"at":"2026-08-01T01:19:39.663Z","status":"found","position":6.3,"parsed":1,"impressions":28,"clicks":0,"ctr":0},"delta":-0.2,"history":[{"at":"2026-07-31T10:16:04.114Z","status":"found","position":6.1,"parsed":1,"impressions":29,"clicks":0,"ctr":0},{"at":"2026-07-31T10:25:56.323Z","status":"found","position":6.1,"parsed":1,"impressions":29,"clicks":0,"ctr":0},{"at":"2026-07-31T11:01:43.025Z","status":"found","position":6.1,"parsed":1,"impressions":29,"clicks":0,"ctr":0},{"at":"2026-07-31T11:04:36.928Z","status":"found","position":6.1,"parsed":1,"impressions":29,"clicks":0,"ctr":0},{"at":"2026-07-31T21:48:06.163Z","status":"found","position":6.1,"parsed":1,"impressions":29,"clicks":0,"ctr":0},{"at":"2026-08-01T01:19:39.663Z","status":"found","position":6.3,"parsed":1,"impressions":28,"clicks":0,"ctr":0}]},"duckduckgo":{"latest":{"at":"2026-08-01T01:21:52.009Z","status":"found","position":1,"parsed":30,"impressions":null,"clicks":null,"ctr":null},"delta":0,"history":[{"at":"2026-07-31T11:06:50.376Z","status":"found","position":1,"parsed":30,"impressions":null,"clicks":null,"ctr":null},{"at":"2026-07-31T22:22:40.541Z","status":"found","position":1,"parsed":30,"impressions":null,"clicks":null,"ctr":null},{"at":"2026-08-01T01:21:52.009Z","status":"found","position":1,"parsed":30,"impressions":null,"clicks":null,"ctr":null}]}}},{"keyword":"line marking wollongong","region":"Australia — English","regionShort":"AU·EN","depth":30,"engines":{"gsc":{"latest":{"at":"2026-08-01T01:19:39.972Z","status":"found","position":6.1,"parsed":2,"impressions":240,"clicks":1,"ctr":0.004166666666666667},"delta":0,"history":[{"at":"2026-07-31T10:16:09.806Z","status":"found","position":6.1,"parsed":2,"impressions":250,"clicks":1,"ctr":0.004},{"at":"2026-07-31T10:26:05.364Z","status":"found","position":6.1,"parsed":2,"impressions":250,"clicks":1,"ctr":0.004},{"at":"2026-07-31T11:01:43.447Z","status":"found","position":6.1,"parsed":2,"impressions":250,"clicks":1,"ctr":0.004},{"at":"2026-07-31T11:04:37.734Z","status":"found","position":6.1,"parsed":2,"impressions":250,"clicks":1,"ctr":0.004},{"at":"2026-07-31T21:48:06.822Z","status":"found","position":6.1,"parsed":2,"impressions":250,"clicks":1,"ctr":0.004},{"at":"2026-08-01T01:19:39.972Z","status":"found","position":6.1,"parsed":2,"impressions":240,"clicks":1,"ctr":0.004166666666666667}]},"duckduckgo":{"latest":{"at":"2026-08-01T01:22:02.319Z","status":"absent","position":null,"parsed":30},"delta":null,"history":[{"at":"2026-07-31T11:07:00.498Z","status":"absent","position":null,"parsed":30},{"at":"2026-07-31T22:22:50.618Z","status":"absent","position":null,"parsed":30},{"at":"2026-08-01T01:22:02.319Z","status":"absent","position":null,"parsed":30}]}}},{"keyword":"car park line marking wollongong","region":"Australia — English","regionShort":"AU·EN","depth":30,"engines":{"gsc":{"latest":{"at":"2026-08-01T01:19:40.288Z","status":"found","position":9.1,"parsed":1,"impressions":81,"clicks":0,"ctr":0},"delta":-0.1,"history":[{"at":"2026-07-31T10:16:04.605Z","status":"found","position":9,"parsed":1,"impressions":84,"clicks":0,"ctr":0},{"at":"2026-07-31T10:25:57.570Z","status":"found","position":9,"parsed":1,"impressions":84,"clicks":0,"ctr":0},{"at":"2026-07-31T11:01:44.216Z","status":"found","position":9,"parsed":1,"impressions":84,"clicks":0,"ctr":0},{"at":"2026-07-31T11:04:38.637Z","status":"found","position":9,"parsed":1,"impressions":84,"clicks":0,"ctr":0},{"at":"2026-07-31T21:48:07.860Z","status":"found","position":9,"parsed":1,"impressions":84,"clicks":0,"ctr":0},{"at":"2026-08-01T01:19:40.288Z","status":"found","position":9.1,"parsed":1,"impressions":81,"clicks":0,"ctr":0}]},"duckduckgo":{"latest":{"at":"2026-08-01T01:22:12.578Z","status":"found","position":2,"parsed":30,"impressions":null,"clicks":null,"ctr":null},"delta":0,"history":[{"at":"2026-07-31T11:07:10.943Z","status":"found","position":2,"parsed":30,"impressions":null,"clicks":null,"ctr":null},{"at":"2026-07-31T22:23:01.045Z","status":"found","position":2,"parsed":30,"impressions":null,"clicks":null,"ctr":null},{"at":"2026-08-01T01:22:12.578Z","status":"found","position":2,"parsed":30,"impressions":null,"clicks":null,"ctr":null}]}}},{"keyword":"line marking companies wollongong","region":"Australia — English","regionShort":"AU·EN","depth":30,"engines":{"gsc":{"latest":{"at":"2026-08-01T01:19:41.377Z","status":"found","position":6.6,"parsed":1,"impressions":42,"clicks":0,"ctr":0},"delta":0,"history":[{"at":"2026-07-31T10:16:05.611Z","status":"found","position":6.6,"parsed":1,"impressions":43,"clicks":0,"ctr":0},{"at":"2026-07-31T10:26:00.176Z","status":"found","position":6.6,"parsed":1,"impressions":43,"clicks":0,"ctr":0},{"at":"2026-07-31T11:01:45.631Z","status":"found","position":6.6,"parsed":1,"impressions":43,"clicks":0,"ctr":0},{"at":"2026-07-31T11:04:40.447Z","status":"found","position":6.6,"parsed":1,"impressions":43,"clicks":0,"ctr":0},{"at":"2026-07-31T21:48:09.080Z","status":"found","position":6.6,"parsed":1,"impressions":43,"clicks":0,"ctr":0},{"at":"2026-08-01T01:19:41.377Z","status":"found","position":6.6,"parsed":1,"impressions":42,"clicks":0,"ctr":0}]},"duckduckgo":{"latest":{"at":"2026-08-01T01:22:33.206Z","status":"absent","position":null,"parsed":30},"delta":null,"history":[{"at":"2026-07-31T11:07:31.443Z","status":"absent","position":null,"parsed":30},{"at":"2026-08-01T01:22:33.206Z","status":"absent","position":null,"parsed":30}]}}},{"keyword":"line marking company wollongong","region":"Australia — English","regionShort":"AU·EN","depth":30,"engines":{"gsc":{"latest":{"at":"2026-08-01T01:19:42.610Z","status":"found","position":6.6,"parsed":1,"impressions":39,"clicks":0,"ctr":0},"delta":0,"history":[{"at":"2026-07-31T10:16:06.390Z","status":"found","position":6.6,"parsed":1,"impressions":40,"clicks":0,"ctr":0},{"at":"2026-07-31T10:26:01.049Z","status":"found","position":6.6,"parsed":1,"impressions":40,"clicks":0,"ctr":0},{"at":"2026-07-31T11:01:46.778Z","status":"found","position":6.6,"parsed":1,"impressions":40,"clicks":0,"ctr":0},{"at":"2026-07-31T11:04:41.914Z","status":"found","position":6.6,"parsed":1,"impressions":40,"clicks":0,"ctr":0},{"at":"2026-07-31T21:48:10.379Z","status":"found","position":6.6,"parsed":1,"impressions":40,"clicks":0,"ctr":0},{"at":"2026-08-01T01:19:42.610Z","status":"found","position":6.6,"parsed":1,"impressions":39,"clicks":0,"ctr":0}]},"duckduckgo":{"latest":{"at":"2026-07-31T23:29:25.210Z","status":"absent","position":null,"parsed":30},"delta":null,"history":[{"at":"2026-07-31T11:07:51.858Z","status":"absent","position":null,"parsed":30},{"at":"2026-07-31T23:29:25.210Z","status":"absent","position":null,"parsed":30}]}}},{"keyword":"line marking services wollongong","region":"Australia — English","regionShort":"AU·EN","depth":30,"engines":{"gsc":{"latest":{"at":"2026-08-01T01:19:43.143Z","status":"found","position":4,"parsed":1,"impressions":32,"clicks":0,"ctr":0},"delta":0,"history":[{"at":"2026-07-31T10:16:08.702Z","status":"found","position":4,"parsed":1,"impressions":35,"clicks":0,"ctr":0},{"at":"2026-07-31T10:26:03.065Z","status":"found","position":4,"parsed":1,"impressions":35,"clicks":0,"ctr":0},{"at":"2026-07-31T11:01:47.289Z","status":"found","position":4,"parsed":1,"impressions":35,"clicks":0,"ctr":0},{"at":"2026-07-31T11:04:42.837Z","status":"found","position":4,"parsed":1,"impressions":35,"clicks":0,"ctr":0},{"at":"2026-07-31T21:48:10.717Z","status":"found","position":4,"parsed":1,"impressions":35,"clicks":0,"ctr":0},{"at":"2026-08-01T01:19:43.143Z","status":"found","position":4,"parsed":1,"impressions":32,"clicks":0,"ctr":0}]},"duckduckgo":{"latest":{"at":"2026-07-31T23:29:35.339Z","status":"absent","position":null,"parsed":30},"delta":null,"history":[{"at":"2026-07-31T11:08:01.929Z","status":"absent","position":null,"parsed":30},{"at":"2026-07-31T23:29:35.339Z","status":"absent","position":null,"parsed":30}]}}},{"keyword":"signage wollongong","region":"Australia — English","regionShort":"AU·EN","depth":30,"engines":{"gsc":{"latest":{"at":"2026-08-01T01:19:43.654Z","status":"found","position":16.9,"parsed":2,"impressions":74,"clicks":1,"ctr":0.013513513513513514},"delta":-0.1,"history":[{"at":"2026-07-31T10:16:12.184Z","status":"found","position":16.8,"parsed":2,"impressions":75,"clicks":1,"ctr":0.013333333333333334},{"at":"2026-07-31T10:26:09.007Z","status":"found","position":16.8,"parsed":2,"impressions":75,"clicks":1,"ctr":0.013333333333333334},{"at":"2026-07-31T11:01:47.927Z","status":"found","position":16.8,"parsed":2,"impressions":75,"clicks":1,"ctr":0.013333333333333334},{"at":"2026-07-31T11:04:43.483Z","status":"found","position":16.8,"parsed":2,"impressions":75,"clicks":1,"ctr":0.013333333333333334},{"at":"2026-07-31T21:48:11.509Z","status":"found","position":16.8,"parsed":2,"impressions":75,"clicks":1,"ctr":0.013333333333333334},{"at":"2026-08-01T01:19:43.654Z","status":"found","position":16.9,"parsed":2,"impressions":74,"clicks":1,"ctr":0.013513513513513514}]},"duckduckgo":{"latest":{"at":"2026-07-31T23:29:45.514Z","status":"found","position":3,"parsed":30,"impressions":null,"clicks":null,"ctr":null},"delta":0,"history":[{"at":"2026-07-31T11:08:11.964Z","status":"found","position":3,"parsed":30,"impressions":null,"clicks":null,"ctr":null},{"at":"2026-07-31T23:29:45.514Z","status":"found","position":3,"parsed":30,"impressions":null,"clicks":null,"ctr":null}]}}},{"keyword":"line marking ulladulla","region":"Australia — English","regionShort":"AU·EN","depth":30,"engines":{"gsc":{"latest":{"at":"2026-08-01T01:19:44.005Z","status":"absent","position":null,"parsed":0},"delta":null,"history":[{"at":"2026-07-31T10:26:04.923Z","status":"absent","position":null,"parsed":0},{"at":"2026-07-31T11:01:48.340Z","status":"absent","position":null,"parsed":0},{"at":"2026-07-31T11:04:43.724Z","status":"absent","position":null,"parsed":0},{"at":"2026-07-31T21:48:12.183Z","status":"absent","position":null,"parsed":0},{"at":"2026-08-01T01:19:44.005Z","status":"absent","position":null,"parsed":0}]},"duckduckgo":{"latest":{"at":"2026-07-31T11:08:22.328Z","status":"found","position":1,"parsed":30,"impressions":null,"clicks":null,"ctr":null},"delta":null,"history":[{"at":"2026-07-31T11:08:22.328Z","status":"found","position":1,"parsed":30,"impressions":null,"clicks":null,"ctr":null}]}}},{"keyword":"car park line marking ulladulla","region":"Australia — English","regionShort":"AU·EN","depth":30,"engines":{"gsc":{"latest":{"at":"2026-08-01T01:19:44.388Z","status":"absent","position":null,"parsed":0},"delta":null,"history":[{"at":"2026-07-31T10:25:56.935Z","status":"absent","position":null,"parsed":0},{"at":"2026-07-31T11:01:48.768Z","status":"absent","position":null,"parsed":0},{"at":"2026-07-31T11:04:43.940Z","status":"absent","position":null,"parsed":0},{"at":"2026-07-31T21:48:12.329Z","status":"absent","position":null,"parsed":0},{"at":"2026-08-01T01:19:44.388Z","status":"absent","position":null,"parsed":0}]},"duckduckgo":{"latest":{"at":"2026-07-31T11:08:32.771Z","status":"found","position":1,"parsed":30,"impressions":null,"clicks":null,"ctr":null},"delta":null,"history":[{"at":"2026-07-31T11:08:32.771Z","status":"found","position":1,"parsed":30,"impressions":null,"clicks":null,"ctr":null}]}}},{"keyword":"line marking south coast nsw","region":"Australia — English","regionShort":"AU·EN","depth":30,"engines":{"gsc":{"latest":{"at":"2026-08-01T01:19:44.930Z","status":"absent","position":null,"parsed":0},"delta":null,"history":[{"at":"2026-07-31T10:26:04.717Z","status":"absent","position":null,"parsed":0},{"at":"2026-07-31T11:01:49.170Z","status":"absent","position":null,"parsed":0},{"at":"2026-07-31T11:04:44.754Z","status":"absent","position":null,"parsed":0},{"at":"2026-07-31T21:48:12.969Z","status":"absent","position":null,"parsed":0},{"at":"2026-08-01T01:19:44.930Z","status":"absent","position":null,"parsed":0}]},"duckduckgo":{"latest":{"at":"2026-07-31T11:08:42.882Z","status":"found","position":3,"parsed":30,"impressions":null,"clicks":null,"ctr":null},"delta":null,"history":[{"at":"2026-07-31T11:08:42.882Z","status":"found","position":3,"parsed":30,"impressions":null,"clicks":null,"ctr":null}]}}},{"keyword":"line marking nowra","region":"Australia — English","regionShort":"AU·EN","depth":30,"engines":{"gsc":{"latest":{"at":"2026-08-01T01:19:45.084Z","status":"absent","position":null,"parsed":0},"delta":null,"history":[{"at":"2026-07-31T10:26:02.158Z","status":"absent","position":null,"parsed":0},{"at":"2026-07-31T11:01:49.569Z","status":"absent","position":null,"parsed":0},{"at":"2026-07-31T11:04:45.058Z","status":"absent","position":null,"parsed":0},{"at":"2026-07-31T21:48:13.145Z","status":"absent","position":null,"parsed":0},{"at":"2026-08-01T01:19:45.084Z","status":"absent","position":null,"parsed":0}]},"duckduckgo":{"latest":{"at":"2026-08-01T00:01:32.288Z","status":"found","position":4,"parsed":30,"impressions":null,"clicks":null,"ctr":null},"delta":-1,"history":[{"at":"2026-07-31T11:08:53.144Z","status":"found","position":3,"parsed":30,"impressions":null,"clicks":null,"ctr":null},{"at":"2026-08-01T00:01:32.288Z","status":"found","position":4,"parsed":30,"impressions":null,"clicks":null,"ctr":null}]}}},{"keyword":"line marking batemans bay","region":"Australia — English","regionShort":"AU·EN","depth":30,"engines":{"gsc":{"latest":{"at":"2026-08-01T01:26:29.390Z","status":"absent","position":null,"parsed":0},"delta":null,"history":[{"at":"2026-07-31T10:25:58.181Z","status":"absent","position":null,"parsed":0},{"at":"2026-07-31T11:01:49.853Z","status":"absent","position":null,"parsed":0},{"at":"2026-07-31T11:04:45.264Z","status":"absent","position":null,"parsed":0},{"at":"2026-07-31T21:48:13.545Z","status":"absent","position":null,"parsed":0},{"at":"2026-08-01T01:19:45.638Z","status":"absent","position":null,"parsed":0},{"at":"2026-08-01T01:26:29.390Z","status":"absent","position":null,"parsed":0}]},"duckduckgo":{"latest":{"at":"2026-08-01T01:26:41.224Z","status":"found","position":1,"parsed":30,"impressions":null,"clicks":null,"ctr":null},"delta":0,"history":[{"at":"2026-07-31T11:09:03.812Z","status":"found","position":1,"parsed":30,"impressions":null,"clicks":null,"ctr":null},{"at":"2026-08-01T01:26:41.224Z","status":"found","position":1,"parsed":30,"impressions":null,"clicks":null,"ctr":null}]}}},{"keyword":"line marking milton nsw","region":"Australia — English","regionShort":"AU·EN","depth":30,"engines":{"gsc":{"latest":{"at":"2026-08-01T01:26:46.190Z","status":"absent","position":null,"parsed":0},"delta":null,"history":[{"at":"2026-07-31T10:26:01.684Z","status":"absent","position":null,"parsed":0},{"at":"2026-07-31T11:01:50.095Z","status":"absent","position":null,"parsed":0},{"at":"2026-07-31T11:04:45.475Z","status":"absent","position":null,"parsed":0},{"at":"2026-07-31T21:48:13.971Z","status":"absent","position":null,"parsed":0},{"at":"2026-08-01T01:19:45.801Z","status":"absent","position":null,"parsed":0},{"at":"2026-08-01T01:26:46.190Z","status":"absent","position":null,"parsed":0}]},"duckduckgo":{"latest":{"at":"2026-08-01T01:26:56.993Z","status":"found","position":1,"parsed":30,"impressions":null,"clicks":null,"ctr":null},"delta":0,"history":[{"at":"2026-07-31T11:09:14.056Z","status":"found","position":1,"parsed":30,"impressions":null,"clicks":null,"ctr":null},{"at":"2026-08-01T01:26:56.993Z","status":"found","position":1,"parsed":30,"impressions":null,"clicks":null,"ctr":null}]}}},{"keyword":"line marking shoalhaven","region":"Australia — English","regionShort":"AU·EN","depth":30,"engines":{"gsc":{"latest":{"at":"2026-08-01T01:19:45.966Z","status":"absent","position":null,"parsed":0},"delta":null,"history":[{"at":"2026-07-31T10:26:03.693Z","status":"absent","position":null,"parsed":0},{"at":"2026-07-31T11:01:50.312Z","status":"absent","position":null,"parsed":0},{"at":"2026-07-31T11:04:45.691Z","status":"absent","position":null,"parsed":0},{"at":"2026-07-31T21:48:14.548Z","status":"absent","position":null,"parsed":0},{"at":"2026-08-01T01:19:45.966Z","status":"absent","position":null,"parsed":0}]},"duckduckgo":{"latest":{"at":"2026-08-01T00:31:22.536Z","status":"found","position":1,"parsed":30,"impressions":null,"clicks":null,"ctr":null},"delta":0,"history":[{"at":"2026-07-31T11:09:24.489Z","status":"found","position":1,"parsed":30,"impressions":null,"clicks":null,"ctr":null},{"at":"2026-08-01T00:31:22.536Z","status":"found","position":1,"parsed":30,"impressions":null,"clicks":null,"ctr":null}]}}},{"keyword":"signage ulladulla","region":"Australia — English","regionShort":"AU·EN","depth":30,"engines":{"gsc":{"latest":{"at":"2026-08-01T01:19:46.124Z","status":"absent","position":null,"parsed":0},"delta":null,"history":[{"at":"2026-07-31T10:26:08.351Z","status":"absent","position":null,"parsed":0},{"at":"2026-07-31T11:01:50.522Z","status":"absent","position":null,"parsed":0},{"at":"2026-07-31T11:04:45.893Z","status":"absent","position":null,"parsed":0},{"at":"2026-07-31T21:48:14.714Z","status":"absent","position":null,"parsed":0},{"at":"2026-08-01T01:19:46.124Z","status":"absent","position":null,"parsed":0}]},"duckduckgo":{"latest":{"at":"2026-08-01T00:31:33.137Z","status":"found","position":3,"parsed":30,"impressions":null,"clicks":null,"ctr":null},"delta":1,"history":[{"at":"2026-07-31T11:09:34.537Z","status":"found","position":4,"parsed":30,"impressions":null,"clicks":null,"ctr":null},{"at":"2026-08-01T00:31:33.137Z","status":"found","position":3,"parsed":30,"impressions":null,"clicks":null,"ctr":null}]}}},{"keyword":"sign writing ulladulla","region":"Australia — English","regionShort":"AU·EN","depth":30,"engines":{"gsc":{"latest":{"at":"2026-08-01T01:19:46.546Z","status":"absent","position":null,"parsed":0},"delta":null,"history":[{"at":"2026-07-31T10:26:06.245Z","status":"absent","position":null,"parsed":0},{"at":"2026-07-31T11:01:50.976Z","status":"absent","position":null,"parsed":0},{"at":"2026-07-31T11:04:46.147Z","status":"absent","position":null,"parsed":0},{"at":"2026-07-31T21:48:15.246Z","status":"absent","position":null,"parsed":0},{"at":"2026-08-01T01:19:46.546Z","status":"absent","position":null,"parsed":0}]},"duckduckgo":{"latest":{"at":"2026-07-31T11:09:44.606Z","status":"found","position":1,"parsed":30,"impressions":null,"clicks":null,"ctr":null},"delta":null,"history":[{"at":"2026-07-31T11:09:44.606Z","status":"found","position":1,"parsed":30,"impressions":null,"clicks":null,"ctr":null}]}}},{"keyword":"vehicle signage ulladulla","region":"Australia — English","regionShort":"AU·EN","depth":30,"engines":{"gsc":{"latest":{"at":"2026-08-01T01:19:46.707Z","status":"absent","position":null,"parsed":0},"delta":null,"history":[{"at":"2026-07-31T10:26:09.222Z","status":"absent","position":null,"parsed":0},{"at":"2026-07-31T11:01:51.179Z","status":"absent","position":null,"parsed":0},{"at":"2026-07-31T11:04:46.386Z","status":"absent","position":null,"parsed":0},{"at":"2026-07-31T21:48:15.586Z","status":"absent","position":null,"parsed":0},{"at":"2026-08-01T01:19:46.707Z","status":"absent","position":null,"parsed":0}]},"duckduckgo":{"latest":{"at":"2026-08-01T00:44:13.961Z","status":"found","position":2,"parsed":23,"impressions":null,"clicks":null,"ctr":null},"delta":0,"history":[{"at":"2026-07-31T11:09:54.677Z","status":"found","position":2,"parsed":30,"impressions":null,"clicks":null,"ctr":null},{"at":"2026-08-01T00:44:13.961Z","status":"found","position":2,"parsed":23,"impressions":null,"clicks":null,"ctr":null}]}}},{"keyword":"signage nowra","region":"Australia — English","regionShort":"AU·EN","depth":30,"engines":{"gsc":{"latest":{"at":"2026-08-01T01:19:47.206Z","status":"found","position":5,"parsed":1,"impressions":4,"clicks":3,"ctr":0.75},"delta":0,"history":[{"at":"2026-07-31T10:26:07.734Z","status":"found","position":5,"parsed":1,"impressions":4,"clicks":3,"ctr":0.75},{"at":"2026-07-31T11:01:51.629Z","status":"found","position":5,"parsed":1,"impressions":4,"clicks":3,"ctr":0.75},{"at":"2026-07-31T11:04:47.021Z","status":"found","position":5,"parsed":1,"impressions":4,"clicks":3,"ctr":0.75},{"at":"2026-07-31T21:48:16.582Z","status":"found","position":5,"parsed":1,"impressions":4,"clicks":3,"ctr":0.75},{"at":"2026-08-01T01:19:47.206Z","status":"found","position":5,"parsed":1,"impressions":4,"clicks":3,"ctr":0.75}]},"duckduckgo":{"latest":{"at":"2026-08-01T00:44:24.156Z","status":"absent","position":null,"parsed":30},"delta":null,"history":[{"at":"2026-07-31T11:10:04.939Z","status":"absent","position":null,"parsed":30},{"at":"2026-08-01T00:44:24.156Z","status":"absent","position":null,"parsed":30}]}}},{"keyword":"line marking company near me","region":"Australia — English","regionShort":"AU·EN","depth":30,"engines":{"gsc":{"latest":{"at":"2026-08-01T01:19:47.366Z","status":"absent","position":null,"parsed":0},"delta":null,"history":[{"at":"2026-07-31T10:26:00.393Z","status":"absent","position":null,"parsed":0},{"at":"2026-07-31T11:01:51.896Z","status":"absent","position":null,"parsed":0},{"at":"2026-07-31T11:04:47.228Z","status":"absent","position":null,"parsed":0},{"at":"2026-07-31T21:48:16.730Z","status":"absent","position":null,"parsed":0},{"at":"2026-08-01T01:19:47.366Z","status":"absent","position":null,"parsed":0}]},"duckduckgo":{"latest":{"at":"2026-08-01T00:44:34.320Z","status":"absent","position":null,"parsed":30},"delta":null,"history":[{"at":"2026-07-31T11:10:15.184Z","status":"absent","position":null,"parsed":30},{"at":"2026-08-01T00:44:34.320Z","status":"absent","position":null,"parsed":30}]}}}]}]}</script>
+<script>
+const DATA = JSON.parse(document.getElementById('payload').textContent);
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+const UI = {
+  gsc: { kind: 'Real Google data', sub: '28-day average position',
+         cols: DATA.includeMetrics ? ['Avg position','Change','Impressions','Clicks','CTR','Trend','Last checked']
+                                   : ['Avg position','Change','Trend','Last checked'],
+         absent: () => 'no impressions' },
+  duckduckgo: { kind: 'Live SERP', sub: 'Position read from a real browser',
+         cols: ['Position','Change','Trend','Last checked'],
+         absent: (p, kw) => 'not in top ' + (p.parsed || kw.depth) },
+};
+
+function timeAgo(iso) {
+  if (!iso) return 'never';
+  const s = (Date.now() - new Date(iso).getTime()) / 1000;
+  if (s < 3600) return Math.max(1, Math.floor(s/60)) + 'm ago';
+  if (s < 86400) return Math.floor(s/3600) + 'h ago';
+  if (s < 2592000) return Math.floor(s/86400) + 'd ago';
+  return new Date(iso).toLocaleDateString();
+}
+
+function spark(history) {
+  const pts = history.filter(h => h.position != null);
+  if (pts.length < 2) return '<span class="muted">—</span>';
+  const w=70,h=22,pad=2, vals=pts.map(p=>p.position);
+  const min=Math.min(...vals), max=Math.max(...vals), span=(max-min)||1;
+  const d = pts.map((p,i)=>{
+    const x=pad+(i*(w-pad*2))/(pts.length-1);
+    const y=pad+((p.position-min)/span)*(h-pad*2);
+    return (i?'L':'M')+x.toFixed(1)+','+y.toFixed(1);
+  }).join(' ');
+  return '<svg class="spark" width="'+w+'" height="'+h+'" viewBox="0 0 '+w+' '+h+'"><path'+(max===min?' class="flat"':'')+' d="'+d+'"/></svg>';
+}
+
+function chart(history, engine) {
+  const pts = history;
+  const found = pts.filter(p=>p.status==='found').map(p=>p.position);
+  if (found.length < 2) return '<p class="hint">Not enough data yet for a trend.</p>';
+  const w=640,h=240,padL=40,padR=14,padT=16,padB=30;
+  const best=Math.max(0,Math.floor(Math.min(...found)-1)), worst=Math.ceil(Math.max(...found)+1), span=(worst-best)||1;
+  const x=i=>padL+(i*(w-padL-padR))/Math.max(pts.length-1,1);
+  const y=p=>padT+((p-best)/span)*(h-padT-padB);
+  const segs=[]; let cur=[];
+  pts.forEach((p,i)=>{ if(p.status==='found') cur.push((cur.length?'L':'M')+x(i).toFixed(1)+','+y(p.position).toFixed(1));
+                       else { if(cur.length>1) segs.push(cur.join(' ')); cur=[]; } });
+  if (cur.length>1) segs.push(cur.join(' '));
+  const dots = pts.map((p,i)=>{
+    const detail = p.status==='found'
+      ? (engine==='gsc'?'avg position ':'position ')+p.position + (p.impressions!=null?' · '+p.impressions.toLocaleString()+' impressions':'')
+      : (engine==='gsc'?'no impressions':'not in top '+(p.parsed||'?'));
+    const cy = p.status==='found'? y(p.position) : h-padB;
+    const cls = p.status==='found' ? 'class="dot"' : 'fill="var(--muted)" opacity=".55"';
+    return '<g><title>'+esc(new Date(p.at).toLocaleString())+' — '+esc(detail)+'</title><circle '+cls+' cx="'+x(i).toFixed(1)+'" cy="'+cy.toFixed(1)+'" r="3.2"/></g>';
+  }).join('');
+  const ticks=[...new Set([best,Math.round((best+worst)/2),worst])].map(v=>
+    '<line class="grid" x1="'+padL+'" y1="'+y(v)+'" x2="'+(w-padR)+'" y2="'+y(v)+'"/><text class="lbl" x="4" y="'+(y(v)+3)+'">'+(engine==='gsc'?'':'#')+v+'</text>').join('');
+  const idx=[...new Set([0,Math.floor((pts.length-1)/2),pts.length-1])];
+  const labels=idx.map(i=>{
+    const a = i===0?'start':(i===pts.length-1?'end':'middle');
+    return '<text class="lbl" x="'+x(i).toFixed(1)+'" y="'+(h-8)+'" text-anchor="'+a+'">'+esc(new Date(pts[i].at).toLocaleDateString([], {day:'numeric',month:'short'}))+'</text>';
+  }).join('');
+  return '<svg class="chart" viewBox="0 0 '+w+' '+h+'">'+ticks+segs.map(d=>'<path class="line" d="'+d+'"/>').join('')+dots+labels+'</svg>';
+}
+
+function deltaCell(d) {
+  if (d === null || d === undefined) return '<span class="muted">—</span>';
+  if (d === 0) return '<span class="delta flat">0</span>';
+  return '<span class="delta '+(d>0?'up':'down')+'">'+(d>0?'↑':'↓')+' '+Math.abs(d)+'</span>';
+}
+
+function render() {
+  const app = document.getElementById('app');
+  app.innerHTML = DATA.projects.map((project, pi) => {
+    const sections = DATA.engines.map(({id, label}) => {
+      const ui = UI[id];
+      const head = '<tr><th class="col-kw">Keyword</th><th>Region</th>' +
+        ui.cols.map(c => '<th class="'+(c==='Trend'||c==='Last checked'?'':'num')+'">'+esc(c)+'</th>').join('') + '</tr>';
+      const rows = project.keywords.map((kw, ki) => {
+        const s = kw.engines[id], l = s.latest;
+        const dash = '<span class="muted">—</span>';
+        let pos = '<span class="chip">not checked</span>';
+        if (l && l.status === 'found') pos = '<span class="pos">'+l.position+'</span>';
+        else if (l && l.status === 'absent') pos = '<span class="chip absent">'+esc(ui.absent(l, kw))+'</span>';
+        const metrics = (id==='gsc' && DATA.includeMetrics)
+          ? '<td class="num">'+(l&&l.status==='found'&&l.impressions!=null?l.impressions.toLocaleString():dash)+'</td>'+
+            '<td class="num">'+(l&&l.status==='found'&&l.clicks!=null?l.clicks.toLocaleString():dash)+'</td>'+
+            '<td class="num">'+(l&&l.status==='found'&&l.ctr!=null?(l.ctr*100).toFixed(1)+'%':dash)+'</td>'
+          : '';
+        return '<tr class="kw-row" data-engine="'+id+'" data-p="'+pi+'" data-k="'+ki+'">'+
+          '<td><span class="kw-cell">'+esc(kw.keyword)+'</span></td>'+
+          '<td class="muted nowrap" title="'+esc(kw.region)+'">'+esc(kw.regionShort)+'</td>'+
+          '<td class="num">'+pos+'</td>'+
+          '<td class="num">'+deltaCell(s.delta)+'</td>'+
+          metrics+
+          '<td>'+spark(s.history)+'</td>'+
+          '<td class="muted nowrap">'+esc(timeAgo(l && l.at))+'</td></tr>'+
+          '<tr class="detail-row hidden" data-for="'+id+'-'+pi+'-'+ki+'"><td colspan="12"><div class="detail-wrap"></div></td></tr>';
+      }).join('');
+      return '<section class="engine-section">'+
+        '<div class="engine-head"><h2>'+esc(label)+'</h2><span class="engine-kind">'+esc(ui.kind)+'</span>'+
+        '<span class="engine-sub">'+esc(ui.sub)+'</span></div>'+
+        '<div class="panel table-panel"><table><thead>'+head+'</thead><tbody>'+rows+'</tbody></table></div></section>';
+    }).join('');
+    return '<div class="project-head"><div><h1>'+esc(project.name)+'</h1>'+
+      '<p class="muted">'+esc(project.domain)+'</p></div></div>'+ sections;
+  }).join('') +
+  '<p class="stamp">Snapshot taken '+esc(new Date(DATA.generatedAt).toLocaleString())+
+  ' · click any row for its trend · checks run locally, this page is read-only</p>';
+
+  // Row click expands the trend chart underneath.
+  app.querySelectorAll('.kw-row').forEach(row => {
+    row.style.cursor = 'pointer';
+    row.addEventListener('click', () => {
+      const engine = row.dataset.engine, pi = Number(row.dataset.p), ki = Number(row.dataset.k);
+      const detail = app.querySelector('[data-for="'+engine+'-'+pi+'-'+ki+'"]');
+      const wrap = detail.querySelector('.detail-wrap');
+      if (!detail.classList.contains('hidden')) return detail.classList.add('hidden');
+      const kw = DATA.projects[pi].keywords[ki];
+      wrap.innerHTML = '<strong>'+esc(kw.keyword)+'</strong> — '+esc(UI[engine].sub)+
+        chart(kw.engines[engine].history, engine);
+      detail.classList.remove('hidden');
+    });
+  });
+}
+render();
+</script>
+<style>
+.detail-row td { background: var(--bg); }
+.detail-wrap { padding: .6rem .2rem; }
+.hidden { display: none; }
+</style>
+</body>
+</html>

@@ -289,8 +289,8 @@ async function handleApi(req, res, url) {
   if ((mm = m('/api/projects/:id/run')) && req.method === 'POST') {
     const body = await readJson(req);
     try {
-      const runId = await tracker.runProject(Number(mm[1]), body.keywordIds || null, body.engines || null);
-      return json(res, 202, { runId });
+      const result = await tracker.runProject(Number(mm[1]), body.keywordIds || null, body.engines || null);
+      return json(res, 202, result);
     } catch (err) {
       return fail(res, 409, err.message);
     }
@@ -298,6 +298,11 @@ async function handleApi(req, res, url) {
 
   if (p === '/api/run/cancel' && req.method === 'POST') {
     return json(res, 200, { cancelled: tracker.cancelRun() });
+  }
+
+  if (p === '/api/run/queue' && req.method === 'DELETE') {
+    const id = url.searchParams.get('id');
+    return json(res, 200, id ? { removed: tracker.cancelQueued(id) } : { cleared: tracker.clearQueue() });
   }
 
   if (p === '/api/run/status' && req.method === 'GET') {

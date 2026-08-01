@@ -9,7 +9,9 @@
   },
   "scripts": {
     "start": "node --no-warnings server.mjs",
-    "dev": "node --no-warnings --watch server.mjs"
+    "dev": "node --no-warnings --watch server.mjs",
+    "export": "node scripts/export.mjs",
+    "install-agent": "node scripts/launch-agent.mjs --install"
   },
   "dependencies": {
     "playwright": "^1.62.1"

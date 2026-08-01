@@ -57,10 +57,41 @@ const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 let active = null; // { runId, projectId, total, done, log, cancelled, current }
 const listeners = new Set();
 
+/**
+ * Pending runs. Only one run executes at a time — DuckDuckGo drives a single
+ * shared Chrome profile, and two concurrent runs would fight over it. Rather
+ * than rejecting a second request, we line it up and run it next.
+ */
+const queue = [];
+let queueSeq = 0;
+
+export function getQueue() {
+  return queue.map((item) => ({
+    id: item.id,
+    projectId: item.projectId,
+    label: item.label,
+  }));
+}
+
 export function getActiveRun() {
-  if (!active) return null;
+  if (!active) return queue.length ? { idle: true, queued: getQueue() } : null;
   const { runId, projectId, total, done, current, cancelled } = active;
-  return { runId, projectId, total, done, current, cancelled, log: active.log.slice(-80) };
+  return { runId, projectId, total, done, current, cancelled, log: active.log.slice(-80), queued: getQueue() };
+}
+
+export function clearQueue() {
+  const n = queue.length;
+  queue.length = 0;
+  emit();
+  return n;
+}
+
+export function cancelQueued(id) {
+  const i = queue.findIndex((q) => q.id === Number(id));
+  if (i === -1) return false;
+  queue.splice(i, 1);
+  emit();
+  return true;
 }
 
 export function subscribe(fn) {
@@ -150,11 +181,42 @@ export async function checkKeyword(keywordRow, project, engineId, onLog = () => 
  * @param {number[]|null} keywordIds  limit to these keywords
  * @param {string[]|null} engineIds   limit to these engines (per-section buttons)
  */
+/**
+ * Start a run, or queue it if one is already going.
+ * @returns {{runId:number}|{queued:true, position:number, id:number}}
+ */
 export async function runProject(projectId, keywordIds = null, engineIds = null) {
-  if (active) throw new Error('A run is already in progress');
-
   const project = db.getProject(projectId);
   if (!project) throw new Error('Project not found');
+
+  if (active) {
+    const label = describeRequest(project, keywordIds, engineIds);
+    // Don't stack identical requests from an impatient double-click.
+    const duplicate = queue.find(
+      (q) => q.projectId === projectId && q.label === label,
+    );
+    if (duplicate) return { queued: true, position: queue.indexOf(duplicate) + 1, id: duplicate.id, duplicate: true };
+
+    const item = { id: ++queueSeq, projectId, keywordIds, engineIds, label };
+    queue.push(item);
+    log(`Queued: ${label} (position ${queue.length})`);
+    emit();
+    return { queued: true, position: queue.length, id: item.id };
+  }
+
+  return startRun(project, keywordIds, engineIds);
+}
+
+function describeRequest(project, keywordIds, engineIds) {
+  const engines = (engineIds?.length ? engineIds : ENGINE_ORDER).map((e) => ENGINES[e]?.label ?? e).join(' + ');
+  const scope = keywordIds?.length
+    ? `${keywordIds.length} keyword${keywordIds.length === 1 ? '' : 's'}`
+    : 'all keywords';
+  return `${project.domain} · ${scope} · ${engines}`;
+}
+
+function startRun(project, keywordIds, engineIds) {
+  const projectId = project.id;
 
   let keywords = db.listKeywords(projectId).filter((k) => k.active);
   if (Array.isArray(keywordIds) && keywordIds.length) {
@@ -190,11 +252,27 @@ export async function runProject(projectId, keywordIds = null, engineIds = null)
   }
 
   // Kick off in the background so the HTTP request that started it can return.
-  execute(project, tasks, runId).catch((err) => {
-    db.finishRun(runId, 'error', err?.message || String(err));
-  });
+  execute(project, tasks, runId)
+    .catch((err) => db.finishRun(runId, 'error', err?.message || String(err)))
+    .finally(drainQueue);
 
-  return runId;
+  return { runId };
+}
+
+/** Start the next queued run, if any. Called once the active run clears. */
+function drainQueue() {
+  if (active || !queue.length) return;
+  const next = queue.shift();
+  const project = db.getProject(next.projectId);
+  if (!project) return drainQueue(); // project deleted while queued
+
+  try {
+    startRun(project, next.keywordIds, next.engineIds);
+  } catch (err) {
+    // e.g. every keyword was deleted while this sat in the queue — skip it.
+    console.error('[queue] skipping queued run:', err.message);
+    drainQueue();
+  }
 }
 
 async function execute(project, tasks, runId) {
