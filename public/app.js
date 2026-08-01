@@ -1,5 +1,7 @@
 /* Rank Tracker dashboard — no build step, no dependencies. */
 
+import { icon, iconFilled } from './icons.js';
+
 const $ = (sel) => document.querySelector(sel);
 const el = {
   projectSelect: $('#project-select'),
@@ -193,6 +195,12 @@ document.addEventListener('keydown', (e) => {
 /* --------------------------------------------------------------- bootstrap */
 
 async function boot() {
+  $('#btn-new-project').innerHTML = icon('plus', 17);
+  $('#btn-settings').innerHTML = icon('settings', 17);
+  $('#btn-export').innerHTML = `${icon('download', 15)}<span>Export CSV</span>`;
+  $('#btn-project-settings').innerHTML = `${icon('sliders', 15)}<span>Settings</span>`;
+  $('#btn-run').innerHTML = `${icon('refresh', 15)}<span>Check rankings</span>`;
+
   state.boot = await api('/api/bootstrap');
   renderProjectSelect();
   renderRegionOptions();
@@ -266,7 +274,7 @@ $('#first-project-form').addEventListener('submit', async (e) => {
 
 $('#btn-new-project').addEventListener('click', () => {
   openModal(
-    `<div class="modal-head"><h2>New project</h2><button class="close">×</button></div>
+    `<div class="modal-head"><h2>New project</h2><button class="close" title="Close">${icon('x', 18)}</button></div>
      <form id="np" class="form-grid">
        <label>Domain <input name="domain" placeholder="example.com" required autocomplete="off"></label>
        <label>Name <span class="muted">(optional)</span><input name="name" autocomplete="off"></label>
@@ -316,7 +324,7 @@ $('#btn-project-settings').addEventListener('click', async () => {
   }
 
   openModal(
-    `<div class="modal-head"><h2>Project settings</h2><button class="close">×</button></div>
+    `<div class="modal-head"><h2>Project settings</h2><button class="close" title="Close">${icon('x', 18)}</button></div>
      <form id="ps" class="form-grid">
        <label>Name <input name="name" value="${esc(project.name)}"></label>
        <label>Domain <input name="domain" value="${esc(project.domain)}"></label>
@@ -414,12 +422,12 @@ function statusCell(kw, summary, engine) {
 
 function deltaCell(summary, engine) {
   const outLabel = engine === 'gsc' ? 'Lost all impressions' : 'Fell out of the tracked depth';
-  if (summary.deltaKind === 'entered') return '<span class="delta up" title="Entered the results">↑ new</span>';
-  if (summary.deltaKind === 'dropped-out') return `<span class="delta down" title="${outLabel}">↓ out</span>`;
+  if (summary.deltaKind === 'entered') return `<span class="delta up" title="Entered the results">${icon('arrowUp', 13)} new</span>`;
+  if (summary.deltaKind === 'dropped-out') return `<span class="delta down" title="${outLabel}">${icon('arrowDown', 13)} out</span>`;
   if (summary.delta === null || summary.delta === undefined) return '<span class="muted">—</span>';
-  if (summary.delta === 0) return '<span class="delta flat">0</span>';
+  if (summary.delta === 0) return '<span class="delta flat" title="No change since the previous check">0</span>';
   const up = summary.delta > 0;
-  return `<span class="delta ${up ? 'up' : 'down'}" title="Previously ${summary.previous?.position}">${up ? '↑' : '↓'} ${Math.abs(summary.delta)}</span>`;
+  return `<span class="delta ${up ? 'up' : 'down'}" title="Previously ${summary.previous?.position}">${up ? icon('arrowUp', 13) : icon('arrowDown', 13)} ${Math.abs(summary.delta)}</span>`;
 }
 
 const num = (v) => (v === null || v === undefined ? '<span class="muted">—</span>' : v.toLocaleString());
@@ -469,8 +477,8 @@ function statRowHtml(engine) {
     ${tile('Ranking', found.length, `of ${state.keywords.length} with a position`)}
     ${tile(engine === 'gsc' ? 'Avg position' : 'Avg position', avg === null ? dash : avg.toFixed(1), positions.length ? `across ${positions.length} ranking keyword${positions.length === 1 ? '' : 's'}` : 'no data yet')}
     ${tile('Top 10', top10, positions.length ? `${Math.round((top10 / positions.length) * 100)}% of ranking keywords` : 'no data yet')}
-    ${tile('Improved', improved ? '↑ ' + improved : '0', 'since the previous check', improved ? 'up' : '')}
-    ${tile('Declined', declined ? '↓ ' + declined : '0', 'since the previous check', declined ? 'down' : '')}
+    ${tile('Improved', improved ? icon('arrowUp', 18) + ' ' + improved : '0', 'since the previous check', improved ? 'up' : '')}
+    ${tile('Declined', declined ? icon('arrowDown', 18) + ' ' + declined : '0', 'since the previous check', declined ? 'down' : '')}
   </div>`;
 }
 
@@ -502,8 +510,8 @@ function rowHtml(kw, engine, sorted = false) {
   return `<tr class="${kw.active ? '' : 'inactive'}" data-id="${kw.id}">
     <td class="drag-cell">${
       sorted
-        ? '<span class="drag-handle off" title="Clear the column sort to drag rows">⠿</span>'
-        : '<span class="drag-handle" draggable="true" title="Drag to reorder" aria-label="Drag to reorder">⠿</span>'
+        ? `<span class="drag-handle off" title="Clear the column sort to drag rows">${iconFilled('grip')}</span>`
+        : `<span class="drag-handle" draggable="true" title="Drag to reorder" aria-label="Drag to reorder">${iconFilled('grip')}</span>`
     }</td>
     <td>
       <span class="kw-cell">${esc(kw.keyword)}</span>
@@ -517,10 +525,10 @@ function rowHtml(kw, engine, sorted = false) {
     <td class="muted nowrap">${esc(timeAgo(l?.checked_at))}</td>
     <td>
       <div class="row-actions">
-        <button class="link-btn act-detail" title="${esc(ui.label)} history for this keyword">Details</button>
-        <button class="link-btn act-run" title="Re-check this keyword on every engine">Check</button>
-        <button class="link-btn act-toggle" title="${kw.active ? 'Pause' : 'Resume'}">${kw.active ? '⏸' : '▶'}</button>
-        <button class="link-btn act-del danger-btn" title="Delete “${esc(kw.keyword)}” and its history">🗑</button>
+        <button class="link-btn act-detail" title="${esc(ui.label)} history for this keyword">${icon('chart')}</button>
+        <button class="link-btn act-run" title="Re-check this keyword on every engine">${icon('refresh')}</button>
+        <button class="link-btn act-toggle" title="${kw.active ? 'Pause checking' : 'Resume checking'}">${kw.active ? icon('pause') : icon('play')}</button>
+        <button class="link-btn act-del danger-btn" title="Delete “${esc(kw.keyword)}” and its history">${icon('trash')}</button>
       </div>
     </td>
   </tr>`;
@@ -551,7 +559,7 @@ function sectionHtml(engine) {
       <h2>${esc(ui.label)}</h2>
       <span class="engine-kind">${esc(ui.kind)}</span>
       <span class="engine-sub">${esc(ui.subtitle)}</span>
-      <button class="engine-run" data-run-engine="${engine}"${state.runActive ? ' disabled' : ''}>Check ${esc(ui.label)}</button>
+      <button class="engine-run" data-run-engine="${engine}"${state.runActive ? ' disabled' : ''}>${icon('refresh', 14)}<span>Check ${esc(ui.label)}</span></button>
     </div>
     ${bannerHtml(engine)}
     ${state.keywords.length ? statRowHtml(engine) : ''}
@@ -793,7 +801,7 @@ function chart(history, engine) {
 async function showDetail(id, engine) {
   const kw = state.keywords.find((k) => k.id === id);
   const ui = ENGINE_UI[engine];
-  openModal(`<div class="modal-head"><h2>${esc(kw.keyword)}</h2><button class="close">×</button></div><p class="hint">Loading…</p>`);
+  openModal(`<div class="modal-head"><h2>${esc(kw.keyword)}</h2><button class="close" title="Close">${icon('x', 18)}</button></div><p class="hint">Loading…</p>`);
   const data = await api(`/api/keywords/${id}/history?engine=${encodeURIComponent(engine)}`);
   const project = state.boot.projects.find((p) => p.id === state.projectId);
 
@@ -837,7 +845,7 @@ async function showDetail(id, engine) {
        <p class="muted" style="margin:.2rem 0 0;font-size:.85rem">${esc(ui.label)} · ${esc(regionLabel(kw.country, kw.language))}${
          engine === 'duckduckgo' ? ` · depth ${kw.depth}` : ''
        }</p></div>
-       <button class="close">×</button>
+       <button class="close" title="Close">${icon('x', 18)}</button>
      </div>
      ${chart(data.history, engine)}
      <h2 style="margin-top:1.4rem">Check history</h2>
@@ -893,7 +901,9 @@ el.runQueue.addEventListener('click', async (e) => {
 function setRunning(running) {
   state.runActive = running;
   el.btnRun.disabled = running;
-  el.btnRun.textContent = running ? 'Checking…' : 'Check rankings';
+  el.btnRun.innerHTML = running
+    ? `${icon('refresh', 15, 'spin')}<span>Checking…</span>`
+    : `${icon('refresh', 15)}<span>Check rankings</span>`;
   el.btnCancel.classList.toggle('hidden', !running);
   el.btnCancel.disabled = false;
   // Only one run can be in flight, so every run button has to reflect that —
@@ -913,7 +923,7 @@ function renderQueue(queued) {
       .map(
         (q, i) => `<div class="queue-item"><span class="queue-n">${i + 1}</span>
           <span>${esc(q.label)}</span>
-          <button class="link-btn queue-x" data-queue-id="${q.id}" title="Remove from queue">✕</button></div>`,
+          <button class="link-btn queue-x" data-queue-id="${q.id}" title="Remove from queue">${icon('x', 14)}</button></div>`,
       )
       .join('');
 }
@@ -968,7 +978,7 @@ function connectRunStream() {
 $('#btn-settings').addEventListener('click', () => {
   const g = state.boot.gsc;
   openModal(
-    `<div class="modal-head"><h2>Settings</h2><button class="close">×</button></div>
+    `<div class="modal-head"><h2>Settings</h2><button class="close" title="Close">${icon('x', 18)}</button></div>
 
      <h2>Daily automatic check</h2>
      <form id="sched-form" class="form-grid" style="max-width:26rem">
