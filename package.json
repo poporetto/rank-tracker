@@ -1,0 +1,17 @@
+{
+  "name": "rank-tracker",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Free keyword rank tracker with a local web dashboard. DuckDuckGo SERP scraping + Google Search Console.",
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "scripts": {
+    "start": "node --no-warnings server.mjs",
+    "dev": "node --no-warnings --watch server.mjs"
+  },
+  "dependencies": {
+    "playwright": "^1.62.1"
+  }
+}

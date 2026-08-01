@@ -1,0 +1,10 @@
+node_modules/
+data/
+.DS_Store
+.claude/
+
+# Generated locally — contains absolute paths for this machine
+com.ranktracker.server.plist
+
+# Published snapshot, if you keep it out of the repo
+# docs/

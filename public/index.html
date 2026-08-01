@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rank Tracker</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📈</text></svg>">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand"><span class="mark">▲</span> Rank Tracker</div>
+  <div class="topbar-right">
+    <select id="project-select" aria-label="Project"></select>
+    <button id="btn-new-project" class="ghost">+ Project</button>
+    <button id="btn-settings" class="ghost" aria-label="Settings">⚙</button>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ---------------------------------------------------------- empty state -->
+  <section id="empty-state" class="panel hidden">
+    <h1>Track where you rank</h1>
+    <p class="muted">Add the domain you want to track, then give it some keywords.</p>
+    <form id="first-project-form" class="stack">
+      <label>Domain
+        <input name="domain" placeholder="example.com" required autocomplete="off">
+      </label>
+      <label>Project name <span class="muted">(optional)</span>
+        <input name="name" placeholder="My site" autocomplete="off">
+      </label>
+      <button class="primary" type="submit">Create project</button>
+    </form>
+  </section>
+
+  <!-- ------------------------------------------------------------ dashboard -->
+  <section id="dashboard" class="hidden">
+
+    <div class="project-head">
+      <div>
+        <h1 id="project-title"></h1>
+        <p class="muted" id="project-sub"></p>
+      </div>
+      <div class="actions">
+        <button id="btn-run" class="primary">Check rankings</button>
+        <button id="btn-cancel" class="danger hidden">Stop run</button>
+        <a id="btn-export" class="ghost button" href="#">Export CSV</a>
+        <button id="btn-project-settings" class="ghost">Project settings</button>
+      </div>
+    </div>
+
+    <div id="run-panel" class="panel run-panel hidden">
+      <div class="run-head">
+        <strong id="run-title">Run in progress</strong>
+        <span id="run-count" class="muted"></span>
+      </div>
+      <div class="progress"><div id="run-bar"></div></div>
+      <pre id="run-log" class="run-log"></pre>
+    </div>
+
+    <div class="panel">
+      <details id="add-keywords" class="add-block">
+        <summary>+ Add keywords</summary>
+        <form id="keyword-form" class="kw-form">
+          <label class="wide">Keywords <span class="muted">— one per line</span>
+            <textarea name="keywords" rows="4" placeholder="best seo tools&#10;free rank tracker" required></textarea>
+          </label>
+          <label>Region
+            <select name="region" id="region-select"></select>
+          </label>
+          <label>DuckDuckGo depth
+            <select name="depth">
+              <option value="10">Top 10</option>
+              <option value="20">Top 20</option>
+              <option value="30" selected>Top 30</option>
+              <option value="50">Top 50</option>
+            </select>
+          </label>
+          <button class="primary" type="submit">Add</button>
+        </form>
+        <p class="muted note">Every keyword you add is checked on <strong>both</strong> DuckDuckGo and
+        Google Search Console. Depth applies to the DuckDuckGo SERP only.</p>
+      </details>
+    </div>
+
+    <!-- One section per engine, rendered by app.js. Search Console first: it's
+         Google's own data, so it's the number most people came here for. -->
+    <div id="sections"></div>
+  </section>
+</main>
+
+<!-- ------------------------------------------------------------------ modals -->
+<div id="modal-backdrop" class="backdrop hidden"><div id="modal" class="modal"></div></div>
+
+<script type="module" src="/app.js"></script>
+</body>
+</html>
